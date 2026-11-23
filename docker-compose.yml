@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: agrovision-db
+    environment:
+      POSTGRES_USER: agro
+      POSTGRES_PASSWORD: agro
+      POSTGRES_DB: agrovision
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: agrovision-app
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg2://agro:agro@db:5432/agrovision
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+      - "7860:7860"
+    volumes:
+      - ./data:/app/data
+      - ./ai_service/models:/app/ai_service/models
+
+volumes:
+  db_data:

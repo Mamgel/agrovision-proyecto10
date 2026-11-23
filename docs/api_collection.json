@@ -1,0 +1,88 @@
+{
+  "info": {
+    "name": "AgroVision API",
+    "description": "Coleccion Postman para endpoints del Proyecto 10 AgroVision",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "base_url", "value": "http://127.0.0.1:8000"},
+    {"key": "token", "value": ""}
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {"method": "GET", "url": "{{base_url}}/health"}
+    },
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/auth/register",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {"mode": "raw", "raw": "{\n  \"username\": \"miguel\",\n  \"email\": \"miguel@agro.com\",\n  \"password\": \"secret123\",\n  \"role\": \"admin\"\n}"}
+      }
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/auth/login",
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {"key": "username", "value": "miguel"},
+            {"key": "password", "value": "secret123"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create farm",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/farms",
+        "header": [
+          {"key": "Authorization", "value": "Bearer {{token}}"},
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {"mode": "raw", "raw": "{\n  \"name\": \"Finca San Jose\",\n  \"location\": \"Valle del Cauca\",\n  \"area_ha\": 12.5\n}"}
+      }
+    },
+    {
+      "name": "Upload image",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/images",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+        "body": {
+          "mode": "formdata",
+          "formdata": [{"key": "file", "type": "file", "src": ""}]
+        }
+      }
+    },
+    {
+      "name": "Analyze image",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/images/1/analyze",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}]
+      }
+    },
+    {
+      "name": "List inferences",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/inferences",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}]
+      }
+    },
+    {
+      "name": "List incidents",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/incidents?status_filter=abierta",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}]
+      }
+    }
+  ]
+}

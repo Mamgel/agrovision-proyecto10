@@ -1,0 +1,21 @@
+FROM python:3.11-slim
+
+# Dependencias del sistema para OpenCV y Pillow
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 libglib2.0-0 libsm6 libxext6 libxrender1 \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+# Carpetas que necesita en runtime
+RUN mkdir -p data/uploads ai_service/models
+
+EXPOSE 8000 7860
+
+# Comando por defecto: API + Gradio en un solo proceso
+CMD ["python", "run.py"]
